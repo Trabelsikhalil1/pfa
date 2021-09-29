@@ -1,0 +1,43 @@
+
+<mat-sidenav-container>
+  <mat-sidenav *ngIf="hasRoute()" class="bg-primary-500" mode="side" opened>
+    <div class="bg-primary-900 p-3">
+       <h1 class="mat-h2 text-center mb-0">Dashboard</h1>
+    </div>
+    <div class="mt-3">
+      <mat-nav-list class="text-white">
+        <mat-list-item routerLinkActive="active" routerLink="/list-clients">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <h4 mat-line >Clients</h4>
+        </mat-list-item>
+        <mat-list-item routerLinkActive="active" routerLink="/tasks-calendar">
+          <mat-icon mat-list-icon>date_range</mat-icon>
+          <h4 mat-line >Event Calender</h4>
+        </mat-list-item>
+      </mat-nav-list>
+
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar *ngIf="hasRoute()" class="bg-light shadow-sm justify-content-end">
+      <button mat-button [matMenuTriggerFor]="menu" color="accent">
+        <mat-icon>account_circle</mat-icon>
+        {{user?.email}} </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="logout()">Sign out</button>
+      </mat-menu>
+    </mat-toolbar>
+    <div class="m-3">
+        <!-- <h3 class="mat-display-1">Contacts</h3> -->
+       
+        <router-outlet></router-outlet>
+        
+      
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- routerLinkActive="active" routerLink="/tasks-calendar" -->
+
+
+

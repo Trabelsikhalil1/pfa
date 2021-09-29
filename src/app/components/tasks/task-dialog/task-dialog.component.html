@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>{{data?.dialog_action || 'Add'}} Task</h2>
+<mat-dialog-content>
+    <form  [formGroup]="myForm">
+        <mat-form-field class="col-12" appearance="fill">
+            <mat-label>title</mat-label>
+            <input matInput placeholder="Ex. John" formControlName="title" >
+        </mat-form-field>
+        <div class="row">
+            <mat-form-field class="col-6" appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="due_date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div class="col-6" formGroupName="time">
+                <mat-form-field class="col-3  w-50" appearance="fill">
+                    <mat-label>Hour</mat-label>
+                    <mat-select formControlName="hours">
+                      <mat-option *ngFor="let hour of hours" [value]="hour">
+                        {{hour}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-3 w-50" appearance="fill">
+                    <mat-label>Minute</mat-label>
+                    <mat-select formControlName="minutes">
+                      <mat-option *ngFor="let minute of minutes" [value]="minute">
+                        {{minute}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-form-field class="col-12" appearance="fill">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category">
+                  <mat-option *ngFor="let category of categories" [value]="category">
+                    <span class="badge" [ngClass]="setCategoryClasses(category)" >{{category}}</span>
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="data?.dialog_action === 'Add' " class="col-12" appearance="fill">
+                <mat-label>Client</mat-label>
+                <mat-select formControlName="client_id">
+                  <mat-option *ngFor="let client of clients" [value]="client.id">
+                    <span class="badge black" >{{client.firstname +" "+  client.lastname}}</span>
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12" appearance="fill">
+                <mat-label>Leave a Note</mat-label>
+                <textarea matInput placeholder="Ex. It makes me feel..." formControlName="notes"></textarea>
+            </mat-form-field>
+        </div>
+          
+    </form>
+    
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex flex-row-reverse justify-content-between gap-3">
+    <div>
+        <button mat-raised-button type="submit" color="accent" [disabled]="myForm.invalid"  [mat-dialog-close]="myForm.value" >Save</button>
+        <button mat-button mat-dialog-close="cancel">Cancel</button>
+    </div>
+    <button *ngIf="data?.dialog_action == 'Edit'  " mat-raised-button (click)="markAsCompleted()" color="accent">Complete Task</button>
+</mat-dialog-actions>

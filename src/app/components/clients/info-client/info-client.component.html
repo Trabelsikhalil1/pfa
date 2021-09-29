@@ -1,0 +1,421 @@
+<mat-card>
+  <mat-card-title>Info Client</mat-card-title>
+  <mat-card-subtitle>Info about a clients / origanizations</mat-card-subtitle>
+  <mat-card-content>
+    <mat-tab-group mat-align-tabs="start" dynamicHeight>
+      <mat-tab label="Personal Data">
+        <mat-spinner *ngIf="showSpinner" class="m-auto"></mat-spinner>
+        <div
+          *ngIf="!showSpinner"
+          class="my-3 d-flex flex-column align-items-center"
+        >
+          <div class="d-flex align-items-start justify-content-between w-100">
+            <div
+              class="
+                d-flex
+                media
+                user-about-block
+                align-items-center
+                mt-3
+                mb-3
+                ms-4-5
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="50"
+                fill="currentColor"
+                class="bi bi-person-bounding-box"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"
+                />
+                <path
+                  d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
+                />
+              </svg>
+              <div class="media-body ms-3">
+                <h3 class="mb-1">{{ client.firstname }}</h3>
+                <p class="mb-0 text-muted">{{ client.lastname }}</p>
+              </div>
+            </div>
+            <button mat-mini-fab color="primary" (click)="passData(client.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <div class="w-100">
+            <ul class="list-group list-group-flush">
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-mail m-r-10">Gender</i></span
+                >
+                <span class="float-end text-body text-muted">
+                  <mat-icon [ngClass]="setGenderClass(client.gender)">{{
+                    client.gender | lowercase
+                  }}</mat-icon>
+                </span>
+              </li>
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-phone-call m-r-10"></i>Job</span
+                >
+                <span class="float-end text-body text-muted">{{
+                  client.job
+                }}</span>
+              </li>
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-map-pin m-r-10"></i>Organization</span
+                >
+                <span class="float-end text-muted">{{
+                  client.organization
+                }}</span>
+              </li>
+            </ul>
+            <mat-divider [inset]="true" class="mt-1 mb-3"></mat-divider>
+            <ul class="list-group list-group-flush mt-3">
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-mail m-r-10">Email Address</i></span
+                >
+                <span class="float-end text-body text-muted">{{
+                  client.email
+                }}</span>
+              </li>
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-phone-call m-r-10"></i>Phone
+                  Number</span
+                >
+                <span class="float-end text-body text-muted">{{
+                  client.phone
+                }}</span>
+              </li>
+              <li
+                class="d-flex justify-content-between align-items-center mh-2"
+              >
+                <span class="f-w-500"
+                  ><i class="feather icon-map-pin m-r-10"></i>Address</span
+                >
+                <span class="float-end text-muted">{{ client.address }}</span>
+              </li>
+            </ul>
+          </div>
+          <mat-divider [inset]="true" class="mt-1 mb-3"></mat-divider>
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <span
+              *ngFor="let tag of client.tags"
+              class="badge bg-primary-500"
+              >{{ tag.title }}</span
+            >
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="History">
+        <div class="row my-3 d-flex flex-row-reverse w-100">
+            <!-- <button 
+          matTooltip="Click to Add a new Task" 
+          matTooltipPosition="after" 
+          matTooltipShowDelay="1000"
+          mat-mini-fab color="primary" (click)="addANote()">
+            <mat-icon>add</mat-icon>
+          </button> -->
+          <mat-accordion multi>
+              <div *ngIf="!historyList.length" class="d-flex justify-content-center align-items-center">
+                <span class="text-center mx-auto"> No history !!</span>
+              </div>
+            <mat-expansion-panel class="my-3 example-headers-align" hideToggle *ngFor="let historyItem of historyList">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div
+                    class="
+                      d-flex
+                      align-items-center
+                      justify-content-between
+                      gap-2
+                    "
+                  >
+                    <mat-icon>done</mat-icon>
+                    <span class="text-muted mat-caption">
+                      Task completed by {{historyItem.completed_by.email}}
+                    </span>
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <div matTooltip="{{historyItem.completed_at.toDate()}} " 
+                    matTooltipPosition="after" 
+                    matTooltipShowDelay="1000">
+                        {{ RelativeDate(historyItem.completed_at) }}
+                    </div>
+                  </mat-panel-description>
+              </mat-expansion-panel-header>
+              <span
+              class="badge"
+              [ngClass]="setCategoryClasses(historyItem.category)"
+              >{{ historyItem.category }}</span
+            >
+            <span class="text-muted mat-caption">
+              {{ historyItem.title }}
+            </span>
+              <p class="mt-1">{{historyItem.notes}}.</p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="!showSpinner" label="Tasks">
+        <mat-spinner *ngIf="showSpinner" class="m-auto"></mat-spinner>
+        <div class="row my-3 d-flex flex-row-reverse w-100">
+          <button 
+          matTooltip="Click to Add a new Task" 
+          matTooltipPosition="after" 
+          matTooltipShowDelay="1000"
+          mat-mini-fab color="primary" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-accordion multi>
+            <mat-expansion-panel class="my-3 example-headers-align" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="mt-2">Overdue</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span *ngIf="overdueList.length"
+                    matBadgeColor="warn"
+                    matBadge="{{ overdueList.length }}"
+                    matBadgeOverlap="false"
+                    class="me-2"
+                  ></span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-expansion-panel
+                *ngFor="let task of overdueList"
+                class="my-3 example-headers-align"
+                hideToggle
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div
+                      class="
+                        d-flex
+                        align-items-center
+                        justify-content-between
+                        gap-2
+                      "
+                    >
+                      <span
+                        class="badge"
+                        [ngClass]="setCategoryClasses(task.category)"
+                        >{{ task.category }}</span
+                      >
+                      <span class="text-muted mat-caption">
+                        {{ task.title }}
+                      </span>
+                    </div>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ displayDate(task.due_date) }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="d-flex flex-row-reverse w-100">
+                    <button 
+                    matTooltip="Click to Edit Task" 
+                    matTooltipPosition="after" 
+                    matTooltipShowDelay="1000"
+                    mat-mini-fab (click)="passToEditDialog(task)" ><mat-icon>edit</mat-icon></button>
+                </div>
+                <p>{{ task.notes }}</p>
+              </mat-expansion-panel>
+            </mat-expansion-panel>
+
+
+            <!-- Today -->
+            <mat-expansion-panel class="my-3 example-headers-align" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="mt-2">Today</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span *ngIf="todayList.length"
+                    matBadgeColor="primary"
+                    matBadge="{{ todayList.length }}"
+                    matBadgeOverlap="false"
+                    class="me-2"
+                  ></span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-expansion-panel
+                *ngFor="let task of todayList"
+                class="my-3 example-headers-align"
+                hideToggle
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div
+                      class="
+                        d-flex
+                        align-items-center
+                        justify-content-between
+                        gap-2
+                      "
+                    >
+                      <span
+                        class="badge"
+                        [ngClass]="setCategoryClasses(task.category)"
+                        >{{ task.category }}</span
+                      >
+                      <span class="text-muted mat-caption">
+                        {{ task.title }}
+                      </span>
+                    </div>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ displayDate(task.due_date) }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="d-flex flex-row-reverse w-100">
+                    <button 
+                    matTooltip="Click to Edit Task" 
+                    matTooltipPosition="after" 
+                    matTooltipShowDelay="1000"
+                    mat-mini-fab (click)="passToEditDialog(task)" ><mat-icon>edit</mat-icon></button>
+                </div>
+                <p>{{ task.notes }}</p>
+              </mat-expansion-panel>
+            </mat-expansion-panel>
+
+
+            <!-- next 7 days -->
+            <mat-expansion-panel class="my-3 example-headers-align" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="mt-2">NEXT 7 DAYS</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span *ngIf="next7daysList.length"
+                    matBadgeColor="accent"
+                    matBadge="{{ next7daysList.length }}"
+                    matBadgeOverlap="false"
+                    class="me-2"
+                  ></span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-expansion-panel
+                *ngFor="let task of next7daysList"
+                class="my-3 example-headers-align"
+                hideToggle
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div
+                      class="
+                        d-flex
+                        align-items-center
+                        justify-content-between
+                        gap-2
+                      "
+                    >
+                      <span
+                        class="badge"
+                        [ngClass]="setCategoryClasses(task.category)"
+                        >{{ task.category }}</span
+                      >
+                      <span class="text-muted mat-caption">
+                        {{ task.title }}
+                      </span>
+                    </div>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ displayDate(task.due_date) }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="d-flex flex-row-reverse w-100">
+                    <button 
+                    matTooltip="Click to Edit Task" 
+                    matTooltipPosition="after" 
+                    matTooltipShowDelay="1000"
+                    mat-mini-fab (click)="passToEditDialog(task)" ><mat-icon>edit</mat-icon></button>
+                </div>
+                <p>{{ task.notes }}</p>
+              </mat-expansion-panel>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
+
+<!-- <mat-card>
+    <mat-card-title>Info Client</mat-card-title>
+    <mat-card-subtitle>Info about a clients / origanizations</mat-card-subtitle>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-md-6">
+                <mat-card class="shadow-sm">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="d-flex media user-about-block align-items-center mt-3 mb-3 ms-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="50" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                                <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                              </svg>
+                            <div class="media-body ms-3">
+                                <h3 class="mb-1">Name</h3>
+                                <p class="mb-0 text-muted">LastName</p>
+                            </div>
+                        </div>
+                        <button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <span class="f-w-500"><i class="feather icon-mail m-r-10">Gender</i></span>
+                                <span class="float-end text-body text-muted">gender</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="f-w-500"><i class="feather icon-phone-call m-r-10"></i>Job</span>
+                                <span  class="float-end text-body text-muted">job</span>
+                            </li>
+                            <li class="list-group-item border-bottom-0">
+                                <span class="f-w-500"><i class="feather icon-map-pin m-r-10"></i>Organization</span>
+                                <span class="float-end text-muted">organization</span>
+                            </li>
+                        </ul>
+                        <mat-divider [inset]="true" class="mt-1 mb-3"></mat-divider>
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item">
+                                <span class="f-w-500"><i class="feather icon-mail m-r-10">Email</i></span>
+                                <span class="float-end text-body text-muted">gender</span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="f-w-500"><i class="feather icon-phone-call m-r-10"></i>Phone</span>
+                                <span  class="float-end text-body text-muted">job</span>
+                            </li>
+                            <li class="list-group-item border-bottom-0">
+                                <span class="f-w-500"><i class="feather icon-map-pin m-r-10"></i>Address</span>
+                                <span class="float-end text-muted">organization</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <mat-divider [inset]="true" class="mt-1 mb-3"></mat-divider>
+                    tags
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card class="shadow-sm">
+                   
+                </mat-card>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card> -->

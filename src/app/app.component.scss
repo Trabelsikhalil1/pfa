@@ -1,0 +1,30 @@
+@use '~@angular/material' as mat;
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+
+
+mat-toolbar {
+    // position: fixed;
+    // background-color: #fff;
+    // z-index: 2;
+}
+
+
+mat-sidenav {
+    width: 240px;
+    // background-color: #1C232F;
+    // color: #fff;
+}
+
+.text-white > *{
+    color: white !important;;
+}
+
+.active {
+    background-color: #161C25 !important;
+    border-color: #161C25 !important;
+}
+

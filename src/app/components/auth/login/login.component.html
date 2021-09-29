@@ -1,0 +1,24 @@
+<div class="d-block my-auto mx-auto mat-typography" style="width: 200px;">
+
+    <h1>Please Sign in</h1>
+    <form class="row d-flex flex-column" [formGroup]="myForm"  (ngSubmit)="onFormSubmit()">
+        <mat-form-field class="col-12" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. John" formControlName="email" >
+            <mat-error *ngIf="email?.invalid && email?.touched">
+                your email is required !
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-12" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Ex. John" type="password" formControlName="password" >
+            <mat-error *ngIf="password?.invalid && password?.touched">
+                your password is required !
+            </mat-error>
+        </mat-form-field>
+        <div class="col-12">
+            <button mat-raised-button class="w-100" color="accent" >Sign In</button>
+        </div>
+    </form>
+
+</div>
